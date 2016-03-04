@@ -1,13 +1,18 @@
-(define (querystring:parse s)
-  "parses a query string into a map, like so:
-    input:  data=data&referer=google
-    output: {\"data\": \"data\", \"referer\": \"google\"}"
-  (make-hash (map (lambda (x) (string:split x #\=)) (string:split s #\&))))
+(module "querystring"
+  (export
+    (list "parse" parse)
+    (list "build" build))
 
-(define (querystring:build h)
-  "builds a query string from a map, like so:
-    input:  {\"data\": \"data\", \"referer\": \"google\"}
-    output: data=data&referer=google"
-  (string:join
-    (hash:keys-map (lambda (x) (string:join (list x (h x)) "=")) h)
-    "&"))
+  (parse (lambda (s)
+    "parses a query string into a map, like so:
+      input:  data=data&referer=google
+      output: {\"data\": \"data\", \"referer\": \"google\"}"
+    (make-hash (map (lambda (x) (string:split x #\=)) (string:split s #\&)))))
+
+  (build (lambda (h)
+    "builds a query string from a map, like so:
+      input:  {\"data\": \"data\", \"referer\": \"google\"}
+      output: data=data&referer=google"
+    (string:join
+      (hash:keys-map (lambda (x) (string:join (list x (h x)) "=")) h)
+      "&"))))
