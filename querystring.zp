@@ -6,13 +6,23 @@
   (parse (lambda (s)
     "parses a query string into a map, like so:
       input:  data=data&referer=google
-      output: {\"data\": \"data\", \"referer\": \"google\"}"
-    (make-hash (map (lambda (x) (string:split x #\=)) (string:split s #\&)))))
+      output: {\"data\": \"data\", \"referer\": \"google\"}
+
+     params:
+      - s: the query string
+     complexity: O(n)
+     returns: a hashmap"
+    (make-hash ($ (string:split % #\=)) (string:split s #\&)))))
 
   (build (lambda (h)
     "builds a query string from a map, like so:
       input:  {\"data\": \"data\", \"referer\": \"google\"}
-      output: data=data&referer=google"
+      output: data=data&referer=google
+
+     params:
+      - h: the hashmap from which to build a querystring
+     complexity: O(n)
+     returns: a string"
     (string:join
-      (hash:keys-map (lambda (x) (string:join (list x (h x)) "=")) h)
+      (hash:keys-map ($ (string:join (list % (h %)) "=")) h)
       "&"))))
